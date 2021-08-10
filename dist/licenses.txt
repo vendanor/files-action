@@ -39,6 +39,8 @@ MIT
 
 escodegen
 BSD-2-Clause
+Copyright (C) 2012 Yusuke Suzuki (twitter: @Constellation) and other contributors.
+
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
 
@@ -176,7 +178,7 @@ MIT
 
 underscore
 MIT
-Copyright (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative
+Copyright (c) 2009-2020 Jeremy Ashkenas, DocumentCloud and Investigative
 Reporters & Editors
 
 Permission is hereby granted, free of charge, to any person
