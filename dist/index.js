@@ -40,7 +40,7 @@ require('./sourcemap-register.js');module.exports =
 /******/ 	// the startup function
 /******/ 	function startup() {
 /******/ 		// Load entry module and return exports
-/******/ 		return __webpack_require__(109);
+/******/ 		return __webpack_require__(399);
 /******/ 	};
 /******/
 /******/ 	// run startup
@@ -48,6 +48,72 @@ require('./sourcemap-register.js');module.exports =
 /******/ })
 /************************************************************************/
 /******/ ({
+
+/***/ 17:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.executeAzCliCommand = void 0;
+const core = __importStar(__webpack_require__(186));
+const exec = __importStar(__webpack_require__(514));
+const io = __importStar(__webpack_require__(436));
+function executeAzCliCommand(command, silent) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const azPath = yield io.which('az', true);
+            const commandLine = `"${azPath}" ${command}`;
+            core.info(`azPath: ${azPath} commandLine: ${commandLine}`);
+            yield exec.exec(commandLine, [], {
+                silent: !!silent
+                // listeners: {
+                //   stdout: (data) => {
+                //     myOutput += data.toString();
+                //   },
+                //   stderr: (data) => {
+                //     myError += data.toString();
+                //   },
+                // },
+            });
+        }
+        catch (error) {
+            throw new Error(error);
+        }
+    });
+}
+exports.executeAzCliCommand = executeAzCliCommand;
+
+
+/***/ }),
 
 /***/ 38:
 /***/ (function(__unusedmodule, exports, __webpack_require__) {
@@ -1496,91 +1562,6 @@ module.exports = require("os");
 
 /***/ }),
 
-/***/ 109:
-/***/ (function(__unusedmodule, exports, __webpack_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const core = __importStar(__webpack_require__(186));
-const md5_1 = __webpack_require__(812);
-const az_login_1 = __webpack_require__(579);
-const az_run_command_1 = __webpack_require__(601);
-const az_logout_1 = __webpack_require__(726);
-function run() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            core.info('🎈🎈 Running Vendanor upload file action 🎈🎈');
-            const token = core.getInput('azure-token', { required: true });
-            const salt = core.getInput('salt', { required: true });
-            const inputFilename = core.getInput('input', { required: true });
-            const append = core.getInput('append-md5-hash');
-            const accountName = core.getInput('azure-account-name', { required: true });
-            const targetFolder = core.getInput('folder');
-            const md5 = new md5_1.Md5();
-            md5.appendStr(salt);
-            md5.appendStr(inputFilename);
-            const md5val = md5.end(false);
-            let targetFilename;
-            if (append) {
-                const parts = inputFilename.split('.');
-                if (parts.length === 2) {
-                    targetFilename = `${targetFolder}${parts[0]}_${md5val}.${parts[1]}`;
-                }
-                else {
-                    targetFilename = `${targetFolder}${inputFilename}_${md5val}`;
-                }
-            }
-            else {
-                targetFilename = `${targetFolder}${inputFilename}`;
-            }
-            const cmd = `storage blob upload --account-name ${accountName} --container-name $web --file ${inputFilename} --name ${targetFilename}`;
-            core.info(`Target filename: ${targetFilename}`);
-            core.info(`AZ cmd: ${cmd}`);
-            yield az_login_1.loginAzure(token);
-            yield az_run_command_1.executeAzCliCommand(cmd);
-            yield az_logout_1.logoutAzure();
-            core.setOutput('filename', targetFilename);
-            core.info('🍿🍿🍿 GREAT SUCCESS - very nice 🍿🍿🍿');
-        }
-        catch (error) {
-            core.setFailed(error.message);
-        }
-    });
-}
-run();
-
-
-/***/ }),
-
 /***/ 129:
 /***/ (function(module) {
 
@@ -2440,6 +2421,30 @@ exports.getState = getState;
 
 /***/ }),
 
+/***/ 272:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.logoutAzure = void 0;
+const az_run_command_1 = __webpack_require__(17);
+exports.logoutAzure = () => __awaiter(void 0, void 0, void 0, function* () {
+    yield az_run_command_1.executeAzCliCommand('logout');
+});
+
+
+/***/ }),
+
 /***/ 278:
 /***/ (function(__unusedmodule, exports) {
 
@@ -2476,7 +2481,7 @@ module.exports = require("module");
 /***/ 296:
 /***/ (function(module) {
 
-module.exports = {"_args":[["escodegen@1.12.0","/Users/thomastvedt/projects/VnFilesAction"]],"_from":"escodegen@1.12.0","_id":"escodegen@1.12.0","_inBundle":false,"_integrity":"sha512-TuA+EhsanGcme5T3R0L80u4t8CpbXQjegRmf7+FPTJrtCTErXFeelblRgHQa1FofEzqYYJmJ/OqjTwREp9qgmg==","_location":"/escodegen","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"escodegen@1.12.0","name":"escodegen","escapedName":"escodegen","rawSpec":"1.12.0","saveSpec":null,"fetchSpec":"1.12.0"},"_requiredBy":["/jsdom","/static-eval"],"_resolved":"https://registry.npmjs.org/escodegen/-/escodegen-1.12.0.tgz","_spec":"1.12.0","_where":"/Users/thomastvedt/projects/VnFilesAction","bin":{"esgenerate":"bin/esgenerate.js","escodegen":"bin/escodegen.js"},"bugs":{"url":"https://github.com/estools/escodegen/issues"},"dependencies":{"esprima":"^3.1.3","estraverse":"^4.2.0","esutils":"^2.0.2","optionator":"^0.8.1","source-map":"~0.6.1"},"description":"ECMAScript code generator","devDependencies":{"acorn":"^4.0.4","bluebird":"^3.4.7","bower-registry-client":"^1.0.0","chai":"^3.5.0","commonjs-everywhere":"^0.9.7","gulp":"^3.8.10","gulp-eslint":"^3.0.1","gulp-mocha":"^3.0.1","semver":"^5.1.0"},"engines":{"node":">=4.0"},"files":["LICENSE.BSD","README.md","bin","escodegen.js","package.json"],"homepage":"http://github.com/estools/escodegen","license":"BSD-2-Clause","main":"escodegen.js","maintainers":[{"name":"Yusuke Suzuki","email":"utatane.tea@gmail.com","url":"http://github.com/Constellation"}],"name":"escodegen","optionalDependencies":{"source-map":"~0.6.1"},"repository":{"type":"git","url":"git+ssh://git@github.com/estools/escodegen.git"},"scripts":{"build":"cjsify -a path: tools/entry-point.js > escodegen.browser.js","build-min":"cjsify -ma path: tools/entry-point.js > escodegen.browser.min.js","lint":"gulp lint","release":"node tools/release.js","test":"gulp travis","unit-test":"gulp test"},"version":"1.12.0"};
+module.exports = {"name":"escodegen","description":"ECMAScript code generator","homepage":"http://github.com/estools/escodegen","main":"escodegen.js","bin":{"esgenerate":"./bin/esgenerate.js","escodegen":"./bin/escodegen.js"},"files":["LICENSE.BSD","README.md","bin","escodegen.js","package.json"],"version":"1.12.0","engines":{"node":">=4.0"},"maintainers":[{"name":"Yusuke Suzuki","email":"utatane.tea@gmail.com","web":"http://github.com/Constellation"}],"repository":{"type":"git","url":"http://github.com/estools/escodegen.git"},"dependencies":{"estraverse":"^4.2.0","esutils":"^2.0.2","esprima":"^3.1.3","optionator":"^0.8.1"},"optionalDependencies":{"source-map":"~0.6.1"},"devDependencies":{"acorn":"^4.0.4","bluebird":"^3.4.7","bower-registry-client":"^1.0.0","chai":"^3.5.0","commonjs-everywhere":"^0.9.7","gulp":"^3.8.10","gulp-eslint":"^3.0.1","gulp-mocha":"^3.0.1","semver":"^5.1.0"},"license":"BSD-2-Clause","scripts":{"test":"gulp travis","unit-test":"gulp test","lint":"gulp lint","release":"node tools/release.js","build-min":"./node_modules/.bin/cjsify -ma path: tools/entry-point.js > escodegen.browser.min.js","build":"./node_modules/.bin/cjsify -a path: tools/entry-point.js > escodegen.browser.js"}};
 
 /***/ }),
 
@@ -7251,6 +7256,83 @@ exports.select1 = function(e, doc) {
 
 /***/ }),
 
+/***/ 322:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.loginAzure = void 0;
+const core = __importStar(__webpack_require__(186));
+const actions_secret_parser_1 = __webpack_require__(74);
+const az_run_command_1 = __webpack_require__(17);
+/**
+ * Mostly copy-paste from here: https://github.com/Azure/login/blob/master/src/main.ts
+ * @param token
+ */
+function loginAzure(token) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const prefix = process.env.AZURE_HTTP_USER_AGENT ? `${process.env.AZURE_HTTP_USER_AGENT}` : '';
+            const azPSHostEnv = process.env.AZUREPS_HOST_ENVIRONMENT ? `${process.env.AZUREPS_HOST_ENVIRONMENT}` : '';
+            const usrAgentRepo = `${process.env.GITHUB_REPOSITORY}`;
+            const actionName = 'AzureLogin';
+            const userAgentString = `${prefix ? `${prefix}+` : ''}GITHUBACTIONS/${actionName}@v1_${usrAgentRepo}`;
+            const azurePSHostEnv = `${azPSHostEnv ? `${azPSHostEnv}+` : ''}GITHUBACTIONS/${actionName}@v1_${usrAgentRepo}`;
+            core.exportVariable('AZURE_HTTP_USER_AGENT', userAgentString);
+            core.exportVariable('AZUREPS_HOST_ENVIRONMENT', azurePSHostEnv);
+            yield az_run_command_1.executeAzCliCommand('--version');
+            const secrets = new actions_secret_parser_1.SecretParser(token, actions_secret_parser_1.FormatType.JSON);
+            const servicePrincipalId = secrets.getSecret('$.clientId', false);
+            const servicePrincipalKey = secrets.getSecret('$.clientSecret', true);
+            const tenantId = secrets.getSecret('$.tenantId', false);
+            const subscriptionId = secrets.getSecret('$.subscriptionId', false);
+            if (!servicePrincipalId || !servicePrincipalKey || !tenantId || !subscriptionId) {
+                throw new Error('Not all values are present in the azure credentials object. Ensure clientId, clientSecret, tenantId and subscriptionId are supplied.');
+            }
+            yield az_run_command_1.executeAzCliCommand(`login --service-principal -u "${servicePrincipalId}" -p "${servicePrincipalKey}" --tenant "${tenantId}"`, true);
+            yield az_run_command_1.executeAzCliCommand(`account set --subscription "${subscriptionId}"`, true);
+            core.info('🙌 Login to azure - Great success! 🙌');
+        }
+        catch (error) {
+            core.error('Login to azure failed 🎃');
+            throw new Error(error);
+        }
+    });
+}
+exports.loginAzure = loginAzure;
+
+
+/***/ }),
+
 /***/ 340:
 /***/ (function(__unusedmodule, exports) {
 
@@ -7617,6 +7699,91 @@ exports.decode = function base64VLQ_decode(aStr, aIndex, aOutParam) {
   aOutParam.value = fromVLQSigned(result);
   aOutParam.rest = aIndex;
 };
+
+
+/***/ }),
+
+/***/ 399:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const core = __importStar(__webpack_require__(186));
+const md5_1 = __webpack_require__(812);
+const az_login_1 = __webpack_require__(322);
+const az_run_command_1 = __webpack_require__(17);
+const az_logout_1 = __webpack_require__(272);
+function run() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            core.info('🎈🎈 Running Vendanor upload file action 🎈🎈');
+            const token = core.getInput('azure-token', { required: true });
+            const salt = core.getInput('salt', { required: true });
+            const inputFilename = core.getInput('input', { required: true });
+            const append = core.getInput('append-md5-hash');
+            const accountName = core.getInput('azure-account-name', { required: true });
+            const targetFolder = core.getInput('folder');
+            const md5 = new md5_1.Md5();
+            md5.appendStr(salt);
+            md5.appendStr(inputFilename);
+            const md5val = md5.end(false);
+            let targetFilename;
+            if (append) {
+                const parts = inputFilename.split('.');
+                if (parts.length === 2) {
+                    targetFilename = `${targetFolder}${parts[0]}_${md5val}.${parts[1]}`;
+                }
+                else {
+                    targetFilename = `${targetFolder}${inputFilename}_${md5val}`;
+                }
+            }
+            else {
+                targetFilename = `${targetFolder}${inputFilename}`;
+            }
+            const cmd = `storage blob upload --account-name ${accountName} --container-name $web --file ${inputFilename} --name ${targetFilename}`;
+            core.info(`Target filename: ${targetFilename}`);
+            core.info(`AZ cmd: ${cmd}`);
+            yield az_login_1.loginAzure(token);
+            yield az_run_command_1.executeAzCliCommand(cmd);
+            yield az_logout_1.logoutAzure();
+            core.setOutput('filename', targetFilename);
+            core.info('🍿🍿🍿 GREAT SUCCESS - very nice 🍿🍿🍿');
+        }
+        catch (error) {
+            core.setFailed(error.message);
+        }
+    });
+}
+run();
 
 
 /***/ }),
@@ -10649,149 +10816,6 @@ exports.SourceNode = SourceNode;
 
 /***/ }),
 
-/***/ 579:
-/***/ (function(__unusedmodule, exports, __webpack_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginAzure = void 0;
-const core = __importStar(__webpack_require__(186));
-const actions_secret_parser_1 = __webpack_require__(74);
-const az_run_command_1 = __webpack_require__(601);
-/**
- * Mostly copy-paste from here: https://github.com/Azure/login/blob/master/src/main.ts
- * @param token
- */
-function loginAzure(token) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const prefix = process.env.AZURE_HTTP_USER_AGENT ? `${process.env.AZURE_HTTP_USER_AGENT}` : '';
-            const azPSHostEnv = process.env.AZUREPS_HOST_ENVIRONMENT ? `${process.env.AZUREPS_HOST_ENVIRONMENT}` : '';
-            const usrAgentRepo = `${process.env.GITHUB_REPOSITORY}`;
-            const actionName = 'AzureLogin';
-            const userAgentString = `${prefix ? `${prefix}+` : ''}GITHUBACTIONS/${actionName}@v1_${usrAgentRepo}`;
-            const azurePSHostEnv = `${azPSHostEnv ? `${azPSHostEnv}+` : ''}GITHUBACTIONS/${actionName}@v1_${usrAgentRepo}`;
-            core.exportVariable('AZURE_HTTP_USER_AGENT', userAgentString);
-            core.exportVariable('AZUREPS_HOST_ENVIRONMENT', azurePSHostEnv);
-            yield az_run_command_1.executeAzCliCommand('--version');
-            const secrets = new actions_secret_parser_1.SecretParser(token, actions_secret_parser_1.FormatType.JSON);
-            const servicePrincipalId = secrets.getSecret('$.clientId', false);
-            const servicePrincipalKey = secrets.getSecret('$.clientSecret', true);
-            const tenantId = secrets.getSecret('$.tenantId', false);
-            const subscriptionId = secrets.getSecret('$.subscriptionId', false);
-            if (!servicePrincipalId || !servicePrincipalKey || !tenantId || !subscriptionId) {
-                throw new Error('Not all values are present in the azure credentials object. Ensure clientId, clientSecret, tenantId and subscriptionId are supplied.');
-            }
-            yield az_run_command_1.executeAzCliCommand(`login --service-principal -u "${servicePrincipalId}" -p "${servicePrincipalKey}" --tenant "${tenantId}"`, true);
-            yield az_run_command_1.executeAzCliCommand(`account set --subscription "${subscriptionId}"`, true);
-            core.info('🙌 Login to azure - Great success! 🙌');
-        }
-        catch (error) {
-            core.error('Login to azure failed 🎃');
-            throw new Error(error);
-        }
-    });
-}
-exports.loginAzure = loginAzure;
-
-
-/***/ }),
-
-/***/ 601:
-/***/ (function(__unusedmodule, exports, __webpack_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.executeAzCliCommand = void 0;
-const core = __importStar(__webpack_require__(186));
-const exec = __importStar(__webpack_require__(514));
-const io = __importStar(__webpack_require__(436));
-function executeAzCliCommand(command, silent) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const azPath = yield io.which('az', true);
-            const commandLine = `"${azPath}" ${command}`;
-            core.info(`azPath: ${azPath} commandLine: ${commandLine}`);
-            yield exec.exec(commandLine, [], {
-                silent: !!silent
-                // listeners: {
-                //   stdout: (data) => {
-                //     myOutput += data.toString();
-                //   },
-                //   stderr: (data) => {
-                //     myError += data.toString();
-                //   },
-                // },
-            });
-        }
-        catch (error) {
-            throw new Error(error);
-        }
-    });
-}
-exports.executeAzCliCommand = executeAzCliCommand;
-
-
-/***/ }),
-
 /***/ 603:
 /***/ (function(module, __unusedexports, __webpack_require__) {
 
@@ -11970,7 +11994,7 @@ exports.MappingList = MappingList;
 /***/ 702:
 /***/ (function(module) {
 
-module.exports = {"_args":[["estraverse@4.3.0","/Users/thomastvedt/projects/VnFilesAction"]],"_from":"estraverse@4.3.0","_id":"estraverse@4.3.0","_inBundle":false,"_integrity":"sha512-39nnKffWz8xN1BU/2c79n9nB9HDzo0niYUqx6xyqUnyoAnQyyWpOTdZEeiCch8BBu515t4wp9ZmgVfVhn9EBpw==","_location":"/estraverse","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"estraverse@4.3.0","name":"estraverse","escapedName":"estraverse","rawSpec":"4.3.0","saveSpec":null,"fetchSpec":"4.3.0"},"_requiredBy":["/escodegen","/eslint-scope","/esrecurse","/jest-circus/escodegen"],"_resolved":"https://registry.npmjs.org/estraverse/-/estraverse-4.3.0.tgz","_spec":"4.3.0","_where":"/Users/thomastvedt/projects/VnFilesAction","bugs":{"url":"https://github.com/estools/estraverse/issues"},"description":"ECMAScript JS AST traversal functions","devDependencies":{"babel-preset-env":"^1.6.1","babel-register":"^6.3.13","chai":"^2.1.1","espree":"^1.11.0","gulp":"^3.8.10","gulp-bump":"^0.2.2","gulp-filter":"^2.0.0","gulp-git":"^1.0.1","gulp-tag-version":"^1.3.0","jshint":"^2.5.6","mocha":"^2.1.0"},"engines":{"node":">=4.0"},"homepage":"https://github.com/estools/estraverse","license":"BSD-2-Clause","main":"estraverse.js","maintainers":[{"name":"Yusuke Suzuki","email":"utatane.tea@gmail.com","url":"http://github.com/Constellation"}],"name":"estraverse","repository":{"type":"git","url":"git+ssh://git@github.com/estools/estraverse.git"},"scripts":{"lint":"jshint estraverse.js","test":"npm run-script lint && npm run-script unit-test","unit-test":"mocha --compilers js:babel-register"},"version":"4.3.0"};
+module.exports = {"name":"estraverse","description":"ECMAScript JS AST traversal functions","homepage":"https://github.com/estools/estraverse","main":"estraverse.js","version":"4.3.0","engines":{"node":">=4.0"},"maintainers":[{"name":"Yusuke Suzuki","email":"utatane.tea@gmail.com","web":"http://github.com/Constellation"}],"repository":{"type":"git","url":"http://github.com/estools/estraverse.git"},"devDependencies":{"babel-preset-env":"^1.6.1","babel-register":"^6.3.13","chai":"^2.1.1","espree":"^1.11.0","gulp":"^3.8.10","gulp-bump":"^0.2.2","gulp-filter":"^2.0.0","gulp-git":"^1.0.1","gulp-tag-version":"^1.3.0","jshint":"^2.5.6","mocha":"^2.1.0"},"license":"BSD-2-Clause","scripts":{"test":"npm run-script lint && npm run-script unit-test","lint":"jshint estraverse.js","unit-test":"mocha --compilers js:babel-register"}};
 
 /***/ }),
 
@@ -12007,30 +12031,6 @@ function issueCommand(command, message) {
 }
 exports.issueCommand = issueCommand;
 //# sourceMappingURL=file-command.js.map
-
-/***/ }),
-
-/***/ 726:
-/***/ (function(__unusedmodule, exports, __webpack_require__) {
-
-"use strict";
-
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.logoutAzure = void 0;
-const az_run_command_1 = __webpack_require__(601);
-exports.logoutAzure = () => __awaiter(void 0, void 0, void 0, function* () {
-    yield az_run_command_1.executeAzCliCommand('logout');
-});
-
 
 /***/ }),
 
