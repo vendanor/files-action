@@ -1,16 +1,15 @@
 {
-  "name": "typescript-action",
+  "name": "files-action",
   "version": "0.0.0",
   "private": true,
-  "description": "TypeScript template action",
-  "main": "lib/main.js",
+  "description": "files-action",
+  "main": "src/main.ts",
   "scripts": {
     "build": "tsc",
     "format": "prettier --write **/*.ts",
     "format-check": "prettier --check **/*.ts",
     "lint": "eslint src/**/*.ts",
-    "package": "ncc build --source-map --license licenses.txt",
-    "ci": "npm run build && npm run lint && npm run package"
+    "package": "ncc build --source-map --license licenses.txt"
   },
   "repository": {
     "type": "git",
@@ -24,20 +23,19 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.2.6",
-    "@actions/exec": "^1.0.4",
-    "@actions/io": "^1.1.0",
+    "@actions/core": "^1.4.0",
+    "@actions/exec": "^1.1.0",
+    "@actions/io": "^1.1.1",
     "actions-secret-parser": "^1.0.3",
-    "ts-md5": "^1.2.7"
+    "ts-md5": "^1.2.9"
   },
   "devDependencies": {
-    "@types/node": "^14.14.37",
-    "@typescript-eslint/parser": "^4.21.0",
-    "@vercel/ncc": "^0.27.0",
-    "eslint": "^7.23.0",
-    "eslint-plugin-github": "^4.1.3",
-    "js-yaml": "^4.0.0",
-    "prettier": "2.2.1",
-    "typescript": "^4.2.4"
+    "@types/node": "^14.10.0",
+    "@typescript-eslint/parser": "^3.10.1",
+    "@vercel/ncc": "^0.23.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-github": "^4.1.5",
+    "prettier": "2.3.2",
+    "typescript": "^4.0.2"
   }
 }
